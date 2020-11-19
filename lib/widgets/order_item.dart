@@ -7,7 +7,6 @@ import 'package:shop_mobile_app/providers/orders.dart';
 
 class OrderItemWidget extends StatefulWidget {
   final OrderItem order;
-
   OrderItemWidget(this.order);
 
   @override
@@ -25,9 +24,7 @@ class _OrderItemState extends State<OrderItemWidget> {
         children: <Widget>[
           ListTile(
             title: Text('\$${widget.order.amount}'),
-            subtitle: Text(
-              DateFormat('dd/MM/yyyy hh:mm').format(widget.order.dateTime),
-            ),
+            subtitle: Text(DateFormat('dd/MM/yyyy hh:mm').format(widget.order.dateTime),),
             trailing: IconButton(
               icon: Icon(_expanded ? Icons.expand_less : Icons.expand_more),
               onPressed: () {

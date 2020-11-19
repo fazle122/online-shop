@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_mobile_app/utility/util.dart';
 
 import '../providers/product.dart';
 import '../providers/products.dart';
@@ -60,6 +61,8 @@ class _ManageProductScreenState extends State<ManageProductScreen> {
     super.didChangeDependencies();
   }
 
+
+
   @override
   void dispose() {
     _imageUrlFocusNode.removeListener(_updateImageUrl);
@@ -74,9 +77,6 @@ class _ManageProductScreenState extends State<ManageProductScreen> {
     if (!_imageUrlFocusNode.hasFocus) {
       if ((!_imageUrlController.text.startsWith('http') &&
               !_imageUrlController.text.startsWith('https'))
-//          || (!_imageUrlController.text.endsWith('.png') &&
-            //  !_imageUrlController.text.endsWith('.jpg') &&
-//              !_imageUrlController.text.endsWith('.jpeg'))
           ) {
         return;
       }
@@ -84,51 +84,6 @@ class _ManageProductScreenState extends State<ManageProductScreen> {
     }
   }
 
-//  Future<void> _saveForm() async {
-//    final isValid = _form.currentState.validate();
-//    if (!isValid) {
-//      return;
-//    }
-//    _form.currentState.save();
-//    setState(() {
-//      _isLoading = true;
-//    });
-//    if (_editedProduct.id != null) {
-//      Provider.of<Products>(context, listen: false)
-//          .updateProduct(_editedProduct.id, _editedProduct);
-//      setState(() {
-//        _isLoading = false;
-//      });
-//      Navigator.of(context).pop();
-//    } else {
-//      try {
-//        await Provider.of<Products>(context, listen: false)
-//            .addProduct(_editedProduct);
-//      } catch (error) {
-//        showDialog(
-//          context: context,
-//          builder: (ctx) => AlertDialog(
-//            title: Text('An error occurred!'),
-//            content: Text('Something went wrong.'),
-//            actions: <Widget>[
-//              FlatButton(
-//                child: Text('Okay'),
-//                onPressed: () {
-//                  Navigator.of(ctx).pop();
-//                },
-//              )
-//            ],
-//          ),
-//        );
-//      }finally{
-//        setState(() {
-//          _isLoading = false;
-//        });
-//        Navigator.of(context).pop();
-//      }
-//    }
-//    // Navigator.of(context).pop();
-//  }
 
   Future<void> _saveForm() async {
     final isValid = _form.currentState.validate();
@@ -140,35 +95,17 @@ class _ManageProductScreenState extends State<ManageProductScreen> {
       _isLoading = true;
     });
     if (_editedProduct.id != null) {
-      await Provider.of<Products>(context, listen: false)
-          .updateProduct(_editedProduct.id, _editedProduct);
+      await Provider.of<Products>(context, listen: false).updateProduct(_editedProduct.id, _editedProduct);
     } else {
       try {
-        await Provider.of<Products>(context, listen: false)
-            .addProduct(_editedProduct);
+        await Provider.of<Products>(context, listen: false).addProduct(_editedProduct);
       } catch (error) {
-        await showDialog(
-          context: context,
-          builder: (ctx) => AlertDialog(
-            title: Text('An error occurred!'),
-            content: Text('Something went wrong.'),
-            actions: <Widget>[
-              FlatButton(
-                child: Text('Okay'),
-                onPressed: () {
-                  Navigator.of(ctx).pop();
-                },
-              )
-            ],
-          ),
-        );
+          Util.showErrorDialog(context, 'An Error Occurred!', 'Something went wrong.');
       }
 
     }
-    setState(() {
-      _isLoading = false;
-          });
-      Navigator.of(context).pop();
+    setState(() {_isLoading = false;});
+    Navigator.of(context).pop();
   }
 
   @override
@@ -184,9 +121,7 @@ class _ManageProductScreenState extends State<ManageProductScreen> {
         ],
       ),
       body: _isLoading
-          ? Center(
-              child: CircularProgressIndicator(),
-            )
+          ? Util.loadingIndicator()
           : Padding(
               padding: const EdgeInsets.all(16.0),
               child: Form(
@@ -317,11 +252,6 @@ class _ManageProductScreenState extends State<ManageProductScreen> {
                                   !value.startsWith('https')) {
                                 return 'Please enter a valid URL.';
                               }
-//                        if (!value.endsWith('.png') &&
-//                            !value.endsWith('.jpg') &&
-//                            !value.endsWith('.jpeg')) {
-//                          return 'Please enter a valid image URL.';
-//                        }
                               return null;
                             },
                             onSaved: (value) {

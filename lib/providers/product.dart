@@ -2,6 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:shop_mobile_app/utility/util.dart';
+
 
 class Product with ChangeNotifier {
   final String id;
@@ -29,10 +31,7 @@ class Product with ChangeNotifier {
     final oldStatus = isFavorite;
     isFavorite = !isFavorite;
     notifyListeners();
-    final url =
-        // 'https://flutter-projects-1234.firebaseio.com/userFavorites/$userId/$id.json?auth=$token';
-    'https://flutter-firebase-22e44.firebaseio.com/userFavorites/$userId/$id.json?auth=$token';
-    // final url = 'https://flutter-firebase-22e44.firebaseio.com/orders/$userid.json?auth=$authToken';
+    var url = Util.baseUrl + 'userFavorites/$userId/$id.json?auth=$token';
 
     try {
       final response = await http.put(

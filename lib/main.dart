@@ -12,6 +12,7 @@ import 'package:shop_mobile_app/screens/product_detail_screen.dart';
 import 'package:shop_mobile_app/screens/products_overview_screen.dart';
 import 'package:shop_mobile_app/screens/splash_screen.dart';
 import 'package:shop_mobile_app/screens/user_products_screen.dart';
+import 'package:shop_mobile_app/style/app_theme.dart';
 
 void main() => runApp(MyApp());
 
@@ -41,25 +42,20 @@ class MyApp extends StatelessWidget {
               previousOrders == null ? [] : previousOrders.orders,
             ),
           ),
-//          ChangeNotifierProvider.value(
-//            value: Orders(),
-//          ),
         ],
         child:
         Consumer<Auth>(
           builder: (ctx, auth, child) => MaterialApp(
             debugShowCheckedModeBanner: false,
             title: 'MyShop',
-            theme: ThemeData(primarySwatch: Colors.teal, accentColor: Colors.blueGrey),
+            theme: AppTheme.shopTheme(),
             home: auth.isAuth
                 ? ProductsOverviewScreen()
                 : FutureBuilder(
               future: auth.tryAutoLogin(),
               builder: (ctx, authResultSnapshot) =>
-              authResultSnapshot.connectionState ==
-                  ConnectionState.waiting
-                  ? SplashScreen()
-                  : AuthScreen(),
+              authResultSnapshot.connectionState == ConnectionState.waiting
+                  ? SplashScreen() : AuthScreen(),
             ),
             routes: {
               ProductDetailScreen.routeName: (context) => ProductDetailScreen(),

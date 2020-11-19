@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:shop_mobile_app/providers/cart.dart';
 import 'package:shop_mobile_app/providers/products.dart';
 import 'package:shop_mobile_app/screens/cart_screen.dart';
+import 'package:shop_mobile_app/utility/util.dart';
 import 'package:shop_mobile_app/widgets/app_drawer.dart';
 import 'package:shop_mobile_app/widgets/badge.dart';
 
@@ -20,13 +21,6 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
   var _isInit = true;
   var _isLoading = false;
 
-  @override
-  void initState(){
-//    Future.delayed(Duration.zero).then((_){
-//      Provider.of<Products>(context).fetchAndSetProducts();
-//    });
-    super.initState();
-  }
 
   @override
   void didChangeDependencies(){
@@ -34,7 +28,7 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
       setState(() {
         _isLoading = true;
       });
-      Provider.of<Products>(context).fetchAndSetProducts().then((_){
+      Provider.of<Products>(context).fetchProducts().then((_){
         setState(() {
           _isLoading = false;
         });
@@ -49,7 +43,7 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('MyShop'),
+        title: Text('All products'),
         actions: <Widget>[
           PopupMenuButton(
             onSelected: (FilterOptios selectedValue) {
@@ -88,7 +82,7 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
         ],
       ),
       drawer: AppDrawer(),
-      body: _isLoading ? Center(child: CircularProgressIndicator(),):ProductsGrid(_showOnlyFavorites),
+      body: _isLoading ? Util.loadingIndicator():ProductsGrid(_showOnlyFavorites),
     );
   }
 }

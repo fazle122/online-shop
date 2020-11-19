@@ -26,7 +26,6 @@ class ProductsGrid extends StatelessWidget {
         value: products[i],
         child: ProductItem(),
       )
-
     );
   }
 }
