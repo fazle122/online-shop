@@ -30,7 +30,8 @@ class Products with ChangeNotifier {
 
   Future<void> fetchProducts([bool filterByUser = false]) async {
     final filterString = filterByUser ? 'orderBy="creatorId"&equalTo="$userId"' : '';
-    var url = Util.baseUrl + 'products.json?auth=$authToken&$filterString';
+    // var url = Util.baseUrl + 'products.json?auth=$authToken&$filterString';
+    var url = Util.baseUrl + 'products.json?auth=$authToken';
     try {
       final response = await http.get(url);
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
@@ -47,8 +48,7 @@ class Products with ChangeNotifier {
           title: prodData['title'],
           description: prodData['description'],
           price: prodData['price'],
-          isFavorite:
-          favoriteData == null ? false : favoriteData[prodId] ?? false,
+          isFavorite: favoriteData == null ? false : favoriteData[prodId] ?? false,
           imageUrl: prodData['imageUrl'],
         ));
       });
